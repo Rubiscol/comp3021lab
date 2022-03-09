@@ -1,9 +1,10 @@
 package base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
-
-public class Folder {
+import java.util.List;
+public class Folder implements Comparable<Folder>{
 	private ArrayList<Note> notes;
 	private String name;
 	
@@ -51,7 +52,44 @@ public class Folder {
 		Folder other = (Folder) obj;
 		return Objects.equals(name, other.name);
 	}
-
 	
-
+	public int compareTo(Folder o) {
+		return name.compareTo(o.name);
+	}
+	
+	public void sortNotes() {
+		Collections.sort(notes);
+	}
+	public List<Note> searchNotes (String keywords){
+	
+		ArrayList<Note> note = new ArrayList<Note>(); 
+		keywords = keywords.toLowerCase();
+		keywords=keywords.replace(" or "," ");
+		String[] wordlists=keywords.split(" ");
+		String first=wordlists[0];
+		String second=wordlists[1];
+		String third=wordlists[2];	
+		String fourth=wordlists[3];
+		for (Note n : notes) {
+			String name=n.getTitle().toLowerCase();
+			if(n instanceof ImageNote) {
+				if (((name.contains(first))||(name.contains(second)))&&((name.contains(third))||(name.contains(fourth)))) {
+					note.add(n);
+				}
+			}
+			else {
+				String content=n.getContent().toLowerCase();
+				if (
+				(((name.contains(first))||(name.contains(second)))&&((name.contains(third))||(name.contains(fourth))))||
+				(((content.contains(first))||(content.contains(second)))&&((content.contains(third))||(content.contains(fourth))))
+				)
+				{
+					note.add(n);
+				}
+				
+			}
+		
+		}
+		return note;
+	}
 }

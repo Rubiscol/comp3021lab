@@ -1,5 +1,8 @@
 package base;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+//import com.sun.tools.javac.util.List;
 
 
 public class NoteBook {
@@ -24,6 +27,13 @@ public class NoteBook {
 		return folders;
 	}
 	
+	public void sortFolders() {
+		for (Folder f:folders) {
+			f.sortNotes();
+			}
+		Collections.sort(folders);
+		}
+	
 	public boolean insertNote(String foldername,Note note) {
 		
 		Folder folder=null;
@@ -46,5 +56,28 @@ public class NoteBook {
 		folder.addNote(note);
 		return true;
 			
-		}		
+		}
+	
+
+	
+	public List<Note> searchNotes(String keywords){
+		ArrayList<Note> note = new ArrayList<Note>(); 
+		for (Folder f:folders) {
+			if (!(f.searchNotes(keywords).isEmpty())) {
+				note.addAll(f.searchNotes(keywords));
+			}
+		}
+		return note;
+		
 	}
+	
+	public boolean createTextNote(String folderName,String title,String content) {
+		TextNote note=new TextNote(title,content);
+		return insertNote(folderName,note);
+		
+	}
+
+	}
+	
+
+
