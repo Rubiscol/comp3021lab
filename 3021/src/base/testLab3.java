@@ -30,7 +30,7 @@ public class testLab3 {
 				System.out.println("--" + nindex++ + ":" + note.toString());
 			}
 		}
-		
+
 		List<Note> notes = nb.searchNotes("java or LAB attendance OR SESSION");
 		System.out.println("Search Results:");
 		if (notes == null || notes.size() == 0) {
