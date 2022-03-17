@@ -1,16 +1,32 @@
 package base;
-
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 //import com.sun.tools.javac.util.List;
 
-public class NoteBook {
+public class NoteBook implements java.io.Serializable{
 
 	private ArrayList<Folder> folders;
 
 	public NoteBook() {
-		folders = new ArrayList<Folder>();
+		this.folders = new ArrayList<Folder>();
+	}
+	
+	public NoteBook(String file) {
+		FileInputStream fis = null;
+		ObjectInputStream in = null;
+		try {
+			fis=new FileInputStream(file);
+			in= new ObjectInputStream(fis);
+			NoteBook n=  (NoteBook)in.readObject();
+			folders=n.getFolders();
+			in.close();
+			
+		}catch (Exception e) {
+			return;
+		}
+		
 	}
 
 	public boolean createTextNote(String folderName, String title) {
@@ -26,7 +42,7 @@ public class NoteBook {
 	}
 
 	public ArrayList<Folder> getFolders() {
-		return folders;
+		return this.folders;
 	}
 
 	public void sortFolders() {
@@ -78,5 +94,25 @@ public class NoteBook {
 		return insertNote(folderName, note);
 
 	}
+	
+	private static final long serialVersionUID = 1L;
+	
+	
+	public boolean save(String file) {
+		FileOutputStream fos=null;
+		ObjectOutputStream out=null;
+		try {
+			fos= new FileOutputStream(file);
+			out=new ObjectOutputStream(fos);
+			out.writeObject(this);
+			out.close();
+
+		}catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 
 }
